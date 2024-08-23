@@ -1,13 +1,16 @@
 Nearest Neighbor Analysis Documentation 
--	Shubham J.
-Overview
+
+# Overview
 This code performs a nearest neighbor analysis on spatial point patterns to compute distances and angles between nearest neighbors. It then estimates and visualizes the orientation density of these angles.
-Components
+#Components:
+
 1.	Nearest Neighbor Analysis: Calculates the distance and angle between each point and its nearest neighbor.
 2.	Orientation Density Estimation: Estimates the density of nearest neighbor angles using a Gaussian kernel.
 3.	Data Loading: Imports spatial point data from a CSV file.
 4.	Visualization: Plots the spatial distribution of points, their nearest neighbors, and the orientation density of the nearest neighbor angles.
-Functions
+
+#Functions :
+
 1. nearest_neighbor_analysis(points)
 Purpose: Computes the nearest neighbor distances and angles for a given set of points.
 Parameters:
@@ -20,9 +23,11 @@ Details:
 •	Sets the diagonal of the distance matrix to infinity to exclude self-distances.
 •	Finds the nearest neighbor for each point by selecting the minimum distance.
 •	Calculates angles using the arctan2 function and converts them to degrees.
-Code:
-python
-Copy code
+
+
+#Code:
+
+
 def nearest_neighbor_analysis(points):
     n_points = len(points)
     dist_matrix = distance_matrix(points, points)
@@ -39,7 +44,9 @@ def nearest_neighbor_analysis(points):
     angles = np.degrees(np.arctan2(vectors[:, 1], vectors[:, 0]))
 
     return nearest_distances, angles
-2. orientation_density(angles, bandwidth, angle_range=(0, 360))
+# orientation_density(angles, bandwidth, angle_range=(0, 360))
+
+
 Purpose: Estimates the density of nearest neighbor angles using a Gaussian kernel.
 Parameters:
 •	angles (numpy.ndarray): Array of angles (in degrees) between points and their nearest neighbors.
@@ -51,9 +58,11 @@ Returns:
 Details:
 •	Uses a Gaussian kernel to estimate the density function.
 •	The kernel function smooths the angle distribution based on the specified bandwidth.
-Code:
+#Code:
+
+
 python
-Copy code
+
 def orientation_density(angles, bandwidth, angle_range=(0, 360)):
     angle_bins = np.linspace(angle_range[0], angle_range[1], 360)
     density = np.zeros_like(angle_bins)
@@ -63,7 +72,7 @@ def orientation_density(angles, bandwidth, angle_range=(0, 360)):
 
     density /= (bandwidth * np.sqrt(2 * np.pi))
     return angle_bins, density
-3. load_data_from_csv(file_path)
+# load_data_from_csv(file_path) : 
 Purpose: Loads spatial point data from a CSV file.
 Parameters:
 •	file_path (str): Path to the CSV file containing the point coordinates.
@@ -73,7 +82,7 @@ Details:
 •	Reads the CSV file and extracts the 'X' and 'Y' coordinates as a numpy array.
 Code:
 python
-Copy code
+
 def load_data_from_csv(file_path):
     data = pd.read_csv(file_path)
     points = data[['X', 'Y']].values
@@ -82,23 +91,19 @@ Usage
 1.	Set Parameters:
 o	Define the bandwidth for density estimation.
 o	Specify the path to the CSV file containing the point coordinates.
-2.	Load Data:
-python
-Copy code
+2#	Load Data:
+
 file_path = 'X_nodes_coordinates.csv'
 points = load_data_from_csv(file_path)
-3.	Perform Analysis:
-python
-Copy code
+# Perform Analysis:
+
 nearest_distances, angles = nearest_neighbor_analysis(points)
-4.	Estimate Orientation Density:
-python
-Copy code
+# Estimate Orientation Density:
+
 bandwidth = 5  # Bandwidth in degrees
 angle_bins, density = orientation_density(angles, bandwidth)
-5.	Visualize Results:
-python
-Copy code
+# Visualize Results:
+
 plt.figure(figsize=(12, 6))
 
 # Plot points and nearest neighbors
